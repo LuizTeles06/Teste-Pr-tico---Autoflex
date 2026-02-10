@@ -1,0 +1,21 @@
+# Dockerfile de Desenvolvimento - Frontend com Hot Reload
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copiar package.json e instalar dependências
+COPY package*.json ./
+RUN npm install
+
+# Copiar configurações (o código fonte será montado via volume)
+COPY tsconfig*.json ./
+COPY postcss.config.js ./
+COPY tailwind.config.js ./
+COPY vite.config.ts ./
+COPY index.html ./
+
+# Expor porta do Vite dev server
+EXPOSE 5173
+
+# Executar em modo desenvolvimento com hot reload
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
