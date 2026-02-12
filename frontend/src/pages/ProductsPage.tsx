@@ -63,10 +63,14 @@ function ProductsPage() {
   };
 
   const handleCloseModal = () => {
+    const wasEditing = editingProduct !== null;
     setIsModalOpen(false);
     setEditingProduct(null);
     dispatch(clearSelectedProduct());
     setFormData({ name: '', value: 0, rawMaterials: [] });
+    if (wasEditing) {
+      dispatch(fetchProducts());
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -74,7 +78,9 @@ function ProductsPage() {
 
     try {
       if (editingProduct) {
-        await dispatch(updateProduct({ id: editingProduct.id!, product: formData })).unwrap();
+        // When editing, don't send rawMaterials - they are managed separately via API
+        const updateData = { name: formData.name, value: formData.value };
+        await dispatch(updateProduct({ id: editingProduct.id!, product: updateData })).unwrap();
         toast.success('Produto atualizado com sucesso');
       } else {
         await dispatch(createProduct(formData)).unwrap();
@@ -357,8 +363,7 @@ function ProductsPage() {
                     <input
                       type="number"
                       className="input"
-                      step="0.0001"
-                      min="0.0001"
+                      step="1"
                       value={requiredQuantity}
                       onChange={(e) =>
                         setRequiredQuantity(parseFloat(e.target.value) || 0)

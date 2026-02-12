@@ -203,7 +203,7 @@ function RawMaterialsPage() {
                 type="number"
                 id="stockQuantity"
                 className="input"
-                step="0.0001"
+                step="1"
                 min="0"
                 value={formData.stockQuantity}
                 onChange={(e) =>

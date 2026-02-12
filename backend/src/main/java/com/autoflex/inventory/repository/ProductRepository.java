@@ -9,6 +9,12 @@ import java.util.Optional;
 @ApplicationScoped
 public class ProductRepository implements PanacheRepository<Product> {
 
+    public List<Product> findAllWithRawMaterials() {
+        return getEntityManager()
+                .createQuery("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.rawMaterials", Product.class)
+                .getResultList();
+    }
+
     public Optional<Product> findByIdOptional(Long id) {
         return find("id", id).firstResultOptional();
     }

@@ -32,7 +32,7 @@ public class ProductService {
     ProductMapper productMapper;
 
     public List<ProductDTO> findAll() {
-        return productMapper.toDTOList(productRepository.listAll());
+        return productMapper.toDTOList(productRepository.findAllWithRawMaterials());
     }
 
     public ProductDTO findById(Long id) {
